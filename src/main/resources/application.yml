@@ -1,0 +1,32 @@
+spring:
+  security:
+    debug: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/improveme
+    username: david
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  mail:
+    host: 127.0.0.1
+    port: 1025
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+server:
+  port: 8080
+
