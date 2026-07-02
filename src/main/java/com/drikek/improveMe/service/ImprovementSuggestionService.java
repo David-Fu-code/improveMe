@@ -56,8 +56,8 @@ public class ImprovementSuggestionService {
 
         if (title != null && !title.isBlank()){suggestion.setTitle(title);}
         if (description != null && !description.isBlank()){suggestion.setDescription(description);}
-        if (difficulty != null && !difficulty.isBlank()){suggestion.setTitle(difficulty);}
-        if (frequency != null && !frequency.isBlank()){suggestion.setTitle(frequency);}
+        if (difficulty != null && !difficulty.isBlank()){suggestion.setDifficulty(difficulty);}
+        if (frequency != null && !frequency.isBlank()){suggestion.setFrequency(frequency);}
 
         ImprovementSuggestion saved = suggestionRepository.save(suggestion);
 

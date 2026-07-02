@@ -7,12 +7,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 @Component
@@ -21,6 +23,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
 
     private static final String[] WHITE_LIST = {
             "/api/v1/auth/register",
@@ -31,7 +34,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/api/v1/auth/logout-all",
             "/api/categories",
             "/api/categories/{id}",
-            "/api/habits/**",
             "/api/v1/auth/forgot-password",
             "/api/v1/auth/reset-password",
     };
@@ -42,11 +44,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         String path = request.getServletPath();
-        System.out.println("JWT Filter skipping path: " + path);
+        logger.debug("JWT Filter processing path: {}", path);
 
         // Skip public endpoints
         if (isPublic(path)) {

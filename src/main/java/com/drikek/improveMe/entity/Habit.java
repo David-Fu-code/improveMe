@@ -27,9 +27,6 @@ public class Habit {
     @JoinColumn(name = "category_id")
     private Category category; // belongs to a specific category
 
-    @Column(name = "guest_token")
-    private String guestToken; // Can use app without registered
-
     @Column(nullable = false)
     private String title;
 

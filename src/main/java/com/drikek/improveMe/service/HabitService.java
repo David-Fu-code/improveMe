@@ -6,13 +6,10 @@ import com.drikek.improveMe.entity.Habit;
 import com.drikek.improveMe.entity.HabitRecord;
 import com.drikek.improveMe.entity.User;
 import com.drikek.improveMe.exception.AuthException;
-import com.drikek.improveMe.exception.BadRequestException;
 import com.drikek.improveMe.repository.CategoryRepository;
-import com.drikek.improveMe.repository.HabitRecordRepository;
 import com.drikek.improveMe.repository.HabitRepository;
 import com.drikek.improveMe.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +42,6 @@ public class HabitService {
         habit.setTitle(request.getTitle());
         habit.setDescription(request.getDescription());
         habit.setSuggested(false);
-        habit.setGuestToken(null);
         habit.setStartDate(LocalDateTime.now());
         habit.setCreatedAt(LocalDateTime.now());
 
@@ -57,51 +53,16 @@ public class HabitService {
         return toHabitResponse(saveHabit);
     }
 
-    // Created guest habit
-    public HabitResponse createHabitForGuest(String guestToken, HabitRequest request) {
-
-        // Validation
-        Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new AuthException("Category not found", 404));
-
-        // Create habit for guest
-        Habit habit = new Habit();
-        habit.setGuestToken(guestToken);
-        habit.setCategory(category);
-        habit.setTitle(request.getTitle());
-        habit.setDescription(request.getDescription());
-        habit.setSuggested(false);
-        habit.setStartDate(LocalDateTime.now());
-        habit.setCreatedAt(LocalDateTime.now());
-
-        Habit saveHabit = habitRepository.save(habit);
-
-        // Create 7 check-ins
-        habitRecordService.initializeWeek(saveHabit);
-
-        return toHabitResponse(saveHabit);
-    }
-
     // Obtain user habits
     public List<HabitResponse> getHabitsForUser(Long userId) {
 
         // Validation
-        User user = userRepository.findById(userId)
+        userRepository.findById(userId)
                 .orElseThrow(() -> new AuthException("User not found", 404));
 
         return habitRepository.findByUserId(userId).stream()// convert list -> Stream to apply transformations
                 .map(this::toHabitResponse) // converts each Habit entity into a HabitResponse DTO using a helper method toHabitResponse
                 .toList(); // Collects result back into list
-
-    }
-
-    // Obtain guest habits
-    public List<HabitResponse> getHabitsForGuest(String guestToken) {
-
-        // No need Validation (guest)
-        return habitRepository.findByGuestToken(guestToken).stream()
-                .map(this::toHabitResponse)
-                .toList();
 
     }
 
@@ -126,15 +87,11 @@ public class HabitService {
     public HabitRecordResponse toggleCheck(Long habitId, int dayIndex) {
 
         // Validation
-        Habit habit = habitRepository.findById(habitId)
+        habitRepository.findById(habitId)
                 .orElseThrow(() -> new AuthException("Habit not found", 404));
 
         HabitRecord record = habitRecordService.getRecord(habitId, dayIndex)
                 .orElseThrow(() -> new AuthException("HabitRecord not found", 404));
-
-        if (!record.getHabit().getId().equals(habitId)) {
-            throw new BadRequestException("Record does not belong to this habit", 400);
-        }
 
         HabitRecord update;
 
@@ -175,7 +132,7 @@ public class HabitService {
     public void deleteHabit(long habitId) {
 
         // Validation
-        Habit habit = habitRepository.findById(habitId)
+        habitRepository.findById(habitId)
                 .orElseThrow(() -> new AuthException("Habit not found", 404));
 
         // Eliminate 7 days register

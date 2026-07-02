@@ -1,6 +1,5 @@
 package com.drikek.improveMe.security;
 
-import com.drikek.improveMe.service.JwtService;
 import com.drikek.improveMe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -37,10 +36,10 @@ public class UserSecurityConfig {
                                 "/api/v1/auth/logout-all",
                                 "/api/categories",
                                 "/api/categories/{id}",
-                                "/api/habits/**",
                                 "/api/v1/auth/forgot-password",
                                 "/api/v1/auth/reset-password"
                         ).permitAll()
+                        .requestMatchers("/api/habits/**").authenticated() // protected by GDPR
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
