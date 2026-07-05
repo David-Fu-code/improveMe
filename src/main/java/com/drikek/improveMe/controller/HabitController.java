@@ -4,13 +4,13 @@ import com.drikek.improveMe.dto.HabitRecordResponse;
 import com.drikek.improveMe.dto.HabitRequest;
 import com.drikek.improveMe.dto.HabitResponse;
 import com.drikek.improveMe.dto.HabitWithRecordResponse;
-import com.drikek.improveMe.entity.Habit;
-import com.drikek.improveMe.exception.BadRequestException;
 import com.drikek.improveMe.service.HabitService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,38 +24,23 @@ public class HabitController {
 
     // CREATE habit
     @PostMapping
-    public ResponseEntity<@NonNull HabitResponse> createHabit(@RequestBody HabitRequest request) {
-        HabitResponse response;
+    public ResponseEntity<@NonNull HabitResponse> createHabit(@AuthenticationPrincipal UserDetails userDetails,
+                                                              @RequestBody HabitRequest request) {
+        // get ID from security context
+        String userName = userDetails.getUsername();
 
-        if (request.getUserId() != null) {
-            response = habitService.createHabit(request.getUserId(), request);
-        } else {
-            throw new BadRequestException("userId must be provided", 400);
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+        // Pass ID to service
+        HabitResponse response = habitService.createHabit(userName, request);
 
-    // CREATE habit for guest
-    @PostMapping("/guest/{guestToken}")
-    public ResponseEntity<@NonNull HabitResponse> createHabitForGuest(@PathVariable String guestToken, @RequestBody HabitRequest request) {
-
-        HabitResponse response = habitService.createHabitForGuest(guestToken, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     // GET habits for user
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<@NonNull List<HabitResponse>> getHabitsForUser(@PathVariable Long userId) {
+    @GetMapping("/user")
+    public ResponseEntity<@NonNull List<HabitResponse>> getHabitsForUser(@AuthenticationPrincipal UserDetails userDetails) {
 
-        List<HabitResponse> response = habitService.getHabitsForUser(userId);
-        return ResponseEntity.ok(response);
-    }
-
-    // GET habits for guest
-    @GetMapping("/guest/{guestToken}")
-    public ResponseEntity<@NonNull List<HabitResponse>> getHabitsForGuest(@PathVariable String guestToken) {
-
-        List<HabitResponse> response = habitService.getHabitsForGuest(guestToken);
+        String userName = userDetails.getUsername();
+        List<HabitResponse> response = habitService.getHabitsForUser(userName);
         return ResponseEntity.ok(response);
     }
 

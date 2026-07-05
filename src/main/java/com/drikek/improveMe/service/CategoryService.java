@@ -1,9 +1,12 @@
 package com.drikek.improveMe.service;
 
 import com.drikek.improveMe.dto.CategoryRequest;
+import com.drikek.improveMe.dto.CategoryResponse;
 import com.drikek.improveMe.entity.Category;
+import com.drikek.improveMe.entity.User;
 import com.drikek.improveMe.exception.AuthException;
 import com.drikek.improveMe.repository.CategoryRepository;
+import com.drikek.improveMe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,61 +17,84 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
     // Create the category
-    public Category createCategory(CategoryRequest request) {
+    public CategoryResponse createCategory(CategoryRequest request, String userName) {
 
-        // Validation
-        if (categoryRepository.existsByName(request.getName().toLowerCase())) {
-                throw new AuthException("Category name already exists", 401);
-        }
+        User user = userRepository.findByEmail(userName)
+                .orElseThrow(() -> new AuthException("User not found", 202));
 
         // Create entity
         Category category = new Category();
         category.setName(request.getName());
         category.setDescription(request.getDescription());
+        category.setUser(user);
 
-        return categoryRepository.save(category);
+        Category savedCategory = categoryRepository.save(category);
+
+        return convertToResponse(savedCategory);
     }
 
     // Obtain category by id
-    public Category getCategory(Long id) {
-        return categoryRepository.findById(id)
+    public CategoryResponse getCategory(Long id) {
+        Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new AuthException("Category not found", 404));
+
+        return convertToResponse(category);
     }
 
     // List categories
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryResponse> getAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
+
+        // map categories to response
+        return categories.stream()
+                .map(this::convertToResponse)
+                .toList();
     }
 
     // Update category
-    public Category updateCategory(Long id, CategoryRequest request) {
+    public CategoryResponse updateCategory(Long id, CategoryRequest request, String userName) {
 
-        // Validation
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new AuthException("category ID not found", 404));
 
-        if (request.getName() == null || request.getName().isBlank()) {
-            throw new AuthException("Category name cannot be empty", 403);
-        } else if (request.getDescription() == null || request.getDescription().isBlank()) {
-            throw new AuthException("Category description cannot be empty", 403);
+        // Check if the user is the owner of the category
+        if (!category.getUser().getEmail().equals(userName)) {
+            throw new AuthException("Unauthorized", 401);
         }
 
+        // Update category
         category.setName(request.getName());
         category.setDescription(request.getDescription());
 
-        categoryRepository.save(category);
+        Category updateCategory = categoryRepository.save(category);
 
-        return category;
+        return convertToResponse(updateCategory);
     }
 
     // Eliminate category
-    public String deleteCategory(Long id) {
-        if (!categoryRepository.existsById(id)) {
-            throw new AuthException("Category not found", 404);
+    public void deleteCategory(Long id, String userName) {
+
+        Category category = categoryRepository.findById(id)
+                        .orElseThrow(() -> new AuthException("category ID not found", 404));
+
+        // Check if the user is the owner of the category
+        if (!category.getUser().getEmail().equals(userName)) {
+            throw new AuthException("Unauthorized", 401);
         }
-        categoryRepository.deleteById(id);
-        return "Category successfully deleted";
+
+        categoryRepository.delete(category);
+    }
+
+    // manual mapping
+    private CategoryResponse convertToResponse(Category category) {
+
+        CategoryResponse response = new CategoryResponse();
+        response.setId(category.getId());
+        response.setName(category.getName());
+        response.setDescription(category.getDescription());
+        return response;
     }
 }

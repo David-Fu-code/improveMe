@@ -26,10 +26,10 @@ public class HabitService {
     private final HabitRecordService habitRecordService;
 
     // Create habit
-    public HabitResponse createHabit(Long userId, HabitRequest request) {
+    public HabitResponse createHabit(String userName, HabitRequest request) {
 
         // Validations
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByEmail(userName)
                 .orElseThrow(() -> new AuthException("User not found", 404));
 
         Category category = categoryRepository.findById(request.getCategoryId())
@@ -54,13 +54,15 @@ public class HabitService {
     }
 
     // Obtain user habits
-    public List<HabitResponse> getHabitsForUser(Long userId) {
+    public List<HabitResponse> getHabitsForUser(String userName) {
 
         // Validation
-        userRepository.findById(userId)
+        User user = userRepository.findByEmail(userName)
                 .orElseThrow(() -> new AuthException("User not found", 404));
 
-        return habitRepository.findByUserId(userId).stream()// convert list -> Stream to apply transformations
+        List<Habit> habits = habitRepository.findByUserId(user.getId());
+
+        return habits.stream()// convert list -> Stream to apply transformations
                 .map(this::toHabitResponse) // converts each Habit entity into a HabitResponse DTO using a helper method toHabitResponse
                 .toList(); // Collects result back into list
 

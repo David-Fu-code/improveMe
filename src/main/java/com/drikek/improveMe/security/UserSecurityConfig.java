@@ -4,6 +4,7 @@ import com.drikek.improveMe.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -34,11 +35,10 @@ public class UserSecurityConfig {
                                 "/api/v1/auth/refresh-token",
                                 "/api/v1/auth/logout",
                                 "/api/v1/auth/logout-all",
-                                "/api/categories",
-                                "/api/categories/{id}",
                                 "/api/v1/auth/forgot-password",
                                 "/api/v1/auth/reset-password"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/categories/{id}", "/api/categories").permitAll()
                         .requestMatchers("/api/habits/**").authenticated() // protected by GDPR
                         .anyRequest().authenticated()
                 )
