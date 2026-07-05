@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class EmailService implements EmailSender{
 
     private final JavaMailSender emailSender;

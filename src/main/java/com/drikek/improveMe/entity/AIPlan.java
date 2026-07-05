@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class AIPlan {
-
 
     @Id
     @SequenceGenerator(sequenceName = "ai_plan_sequence", name = "ai_plan_sequence", allocationSize = 1)

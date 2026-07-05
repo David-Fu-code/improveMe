@@ -1,7 +1,6 @@
 package com.drikek.improveMe.controller;
 
 import com.drikek.improveMe.dto.ImprovementSuggestionDTO;
-import com.drikek.improveMe.entity.ImprovementSuggestion;
 import com.drikek.improveMe.service.ImprovementSuggestionService;
 import jakarta.validation.Valid;
 import lombok.NonNull;
@@ -14,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/suggestions")
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class ImproveSuggestionController {
 
     private final ImprovementSuggestionService suggestionService;

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+@SuppressWarnings("unused")
 public interface HabitRepository  extends JpaRepository<@NonNull Habit, @NonNull Long> {
 
     // All habits of a specific user

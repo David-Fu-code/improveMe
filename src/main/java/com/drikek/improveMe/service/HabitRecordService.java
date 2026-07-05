@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class HabitRecordService {
 
     private final HabitRecordRepository habitRecordRepository;

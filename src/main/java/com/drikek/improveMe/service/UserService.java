@@ -4,6 +4,7 @@ import com.drikek.improveMe.entity.User;
 import com.drikek.improveMe.exception.AuthException;
 import com.drikek.improveMe.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,9 +16,10 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public void saveUser(User user) {userRepository.save(user);};
+    public void saveUser(User user) {userRepository.save(user);}
 
     @Override
+    @NullMarked
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new AuthException("Email not found", 404));

@@ -2,16 +2,14 @@ package com.drikek.improveMe.refreshToken;
 
 import com.drikek.improveMe.entity.User;
 import com.drikek.improveMe.exception.AuthException;
-import com.drikek.improveMe.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
@@ -69,17 +67,4 @@ public class RefreshTokenService {
     public String generateRefreshTokenString() {
         return UUID.randomUUID().toString();
     }
-
-
-
-    // Single Token access
-//    public RefreshToken updateRefreshToken(RefreshToken oldToken, User user) {
-//        oldToken.setToken(generateRefreshTokenString()); // new token
-//        oldToken.setExpiresDate(LocalDateTime.now().plusDays(7));
-//        oldToken.setUsed(false);
-//        return refreshTokenRepository.save(oldToken); // update register
-//    }
-
-
-
 }

@@ -1,6 +1,5 @@
 package com.drikek.improveMe.dto;
 
-import com.drikek.improveMe.entity.HabitRecord;
 import lombok.Builder;
 import lombok.Data;
 

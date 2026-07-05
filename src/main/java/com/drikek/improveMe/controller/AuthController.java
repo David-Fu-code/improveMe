@@ -5,19 +5,16 @@ import com.drikek.improveMe.entity.User;
 import com.drikek.improveMe.exception.AuthException;
 import com.drikek.improveMe.repository.UserRepository;
 import com.drikek.improveMe.service.AuthService;
-import com.drikek.improveMe.service.token.ConfirmationTokenService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/auth")
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class AuthController {
 
     private final AuthService authService;

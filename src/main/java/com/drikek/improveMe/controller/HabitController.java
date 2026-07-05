@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/habits")
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class HabitController {
 
     private final HabitService habitService;

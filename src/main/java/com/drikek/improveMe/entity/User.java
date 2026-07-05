@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Data
@@ -41,9 +41,10 @@ public class User implements UserDetails {
     private boolean enabled = false;
 
     @Override
-    public Collection<@NonNull ? extends GrantedAuthority> getAuthorities() {
+    @NonNull
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + appUserRole.name());
-        return Collections.singletonList(authority);
+        return List.of(authority);
     }
 
     @Override

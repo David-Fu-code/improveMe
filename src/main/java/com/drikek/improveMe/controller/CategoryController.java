@@ -2,7 +2,6 @@ package com.drikek.improveMe.controller;
 
 import com.drikek.improveMe.dto.CategoryRequest;
 import com.drikek.improveMe.dto.CategoryResponse;
-import com.drikek.improveMe.entity.Category;
 import com.drikek.improveMe.service.CategoryService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

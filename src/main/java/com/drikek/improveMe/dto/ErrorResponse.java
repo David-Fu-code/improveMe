@@ -2,7 +2,6 @@ package com.drikek.improveMe.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -10,6 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class ErrorResponse {
     private int status;
     private String message;

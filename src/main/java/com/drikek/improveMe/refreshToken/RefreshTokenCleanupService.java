@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class RefreshTokenCleanupService {
 
     private final RefreshTokenRepository refreshTokenRepository;

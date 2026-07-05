@@ -14,8 +14,6 @@ import com.drikek.improveMe.repository.UserRepository;
 import com.drikek.improveMe.service.token.ConfirmationTokenService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +22,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class AuthService {
 
     private final UserService userService;
