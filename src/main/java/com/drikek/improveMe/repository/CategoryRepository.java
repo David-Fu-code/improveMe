@@ -1,17 +1,18 @@
 package com.drikek.improveMe.repository;
 
 import com.drikek.improveMe.entity.Category;
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("ALL")
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+public interface CategoryRepository extends JpaRepository<@NonNull Category, @NonNull Long> {
 
-    // findbyName throws error, this version is much cleaner
+    // Find category by name
     boolean existsByName(String name);
 
     // Find categories by part of name (search)

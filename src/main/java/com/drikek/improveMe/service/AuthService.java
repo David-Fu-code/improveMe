@@ -2,6 +2,7 @@ package com.drikek.improveMe.service;
 
 import com.drikek.improveMe.dto.AuthResponse;
 import com.drikek.improveMe.dto.LoginRequest;
+import com.drikek.improveMe.dto.LogoutAllResponse;
 import com.drikek.improveMe.dto.RegisteredRequest;
 import com.drikek.improveMe.email.EmailSender;
 import com.drikek.improveMe.entity.AppUserRole;
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -164,13 +166,22 @@ public class AuthService {
     }
 
     // When user Logout invalidate all tokens for all devices
-    public String logoutAllUserTokens(User user) {
+    @Transactional
+    public LogoutAllResponse logoutAllUserTokens(String email) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new AuthException("User not found with email: " + email, 404));
+
         List<RefreshToken> tokens = refreshTokenRepository.findByUser(user);
         for (RefreshToken token : tokens) {
             token.setUsed(true);
         }
         refreshTokenRepository.saveAll(tokens);
-        return "All sessions logged out successfully";
+
+        return new LogoutAllResponse(
+                "All sessions logged out successfully",
+                LocalDateTime.now()
+        );
     }
 
 

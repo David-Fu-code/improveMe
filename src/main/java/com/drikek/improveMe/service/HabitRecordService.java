@@ -20,11 +20,11 @@ public class HabitRecordService {
     private final HabitRecordRepository habitRecordRepository;
 
     // Create the 7-day week when habit is created
-    public List<HabitRecord> initializeWeek(Habit habit) {
+    public void initializeWeek(Habit habit) {
 
         // Validation prevent duplicated weeks
         if (habitRecordRepository.existsByHabitId(habit.getId())) {
-            return habitRecordRepository.findByHabitIdOrderByDayIndexAsc(habit.getId());
+            return;
         }
 
         List<HabitRecord> records = new ArrayList<>();
@@ -33,8 +33,7 @@ public class HabitRecordService {
             HabitRecord record = new HabitRecord(habit, day);
             records.add(record);
         }
-
-        return habitRecordRepository.saveAll(records);
+        habitRecordRepository.saveAll(records);
     }
 
     // Get all 7 days ordered

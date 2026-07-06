@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class ConfirmationTokenService {
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
@@ -40,22 +41,19 @@ public class ConfirmationTokenService {
         ConfirmationToken confirmationToken = confirmationTokenRepository.findByToken(token)
                 .orElseThrow(() -> new IllegalStateException("Invalid or expired confirmation token"));
 
-        String message;
-        boolean firstTime = false;
-
         if (confirmationToken.getConfirmedAt() != null) {
             throw new IllegalStateException("Email already confirmed");
-        } else if (confirmationToken.getExpiredAt().isBefore(LocalDateTime.now())){
-            throw new IllegalStateException("Invalid or expired confirmation token");
-        } else {
-            confirmationToken.setConfirmedAt(LocalDateTime.now());
-            confirmationTokenRepository.save(confirmationToken);
-            message = "Email confirmed successfully";
-            firstTime = true;
         }
 
-        return new ConfirmationResult(message, confirmationToken.getUser(), firstTime);
+        if (confirmationToken.getExpiredAt().isBefore(LocalDateTime.now())){
+            throw new IllegalStateException("Invalid or expired confirmation token");
+        }
+
+        confirmationToken.setConfirmedAt(LocalDateTime.now());
+        confirmationTokenRepository.save(confirmationToken);
+
+        return new ConfirmationResult("Email confirmed successfully", confirmationToken.getUser(), true);
     }
 
-    public static record ConfirmationResult(String message, User user, boolean firstTime){}
+    public record ConfirmationResult(String message, User user, boolean firstTime){}
 }

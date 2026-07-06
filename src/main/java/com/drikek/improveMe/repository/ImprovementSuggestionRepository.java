@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ImprovementSuggestionRepository extends JpaRepository<ImprovementSuggestion, Long> {
+public interface ImprovementSuggestionRepository extends JpaRepository<@NonNull ImprovementSuggestion, @NonNull Long> {
 
     List<ImprovementSuggestion> findByCategoryId(Long categoryId);
     void deleteById(Long id);

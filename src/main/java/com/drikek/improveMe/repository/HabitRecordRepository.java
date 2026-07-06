@@ -2,6 +2,7 @@ package com.drikek.improveMe.repository;
 
 import com.drikek.improveMe.entity.Habit;
 import com.drikek.improveMe.entity.HabitRecord;
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface HabitRecordRepository  extends JpaRepository<HabitRecord, Long> {
+@SuppressWarnings("unused")
+public interface HabitRecordRepository  extends JpaRepository<@NonNull HabitRecord, @NonNull Long> {
 
     // Get all 7 days ordered correctly for ONE habit
     List<HabitRecord> findByHabitOrderByDayIndex(Habit habit);
@@ -30,7 +32,7 @@ public interface HabitRecordRepository  extends JpaRepository<HabitRecord, Long>
     // Check if a habit already has records (to avoid duplicates)
     boolean existsByHabitId(Long habitId);
 
-    // Delet habit by habitId
+    // Delete habit by habitId
     void deleteByHabitId(Long habitId);
 }
 
