@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
-
+@SuppressWarnings("unused")
 public interface AssessmentRepository extends JpaRepository<@NonNull Assessment, @NonNull Long> {
 
     List<Assessment> findByUserId(Long userId);
