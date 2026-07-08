@@ -92,6 +92,15 @@ public class AssessmentService {
         assessmentRepository.deleteById(assessmentId);
     }
 
+    // overloading method to accept userName instead of userId
+    public AssessmentResponse getLatestAssessment(String userName, Long categoryId) {
+
+        User user = userRepository.findByEmail(userName)
+                .orElseThrow(() -> new AuthException("Username not found: " + userName, 404));
+
+        return getLatestAssessment(user.getId(), categoryId);
+    }
+
 
     private AssessmentResponse toAssessmentResponse(Assessment saveAssessment) {
 

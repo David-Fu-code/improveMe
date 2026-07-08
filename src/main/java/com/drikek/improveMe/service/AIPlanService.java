@@ -115,6 +115,15 @@ public class AIPlanService {
         return toAIPlanResponse(updateAIPlan);
     }
 
+    // overloading method to accept userName instead of userId
+    public AIPlanResponse getLatestAIPlan(String userName, Long categoryId) {
+
+        User user = userRepository.findByEmail(userName)
+                .orElseThrow(() -> new AuthException("Username not found: " + userName, 404));
+
+        return getLatestAIPlan(user.getId(), categoryId);
+    }
+
     private AIPlanResponse toAIPlanResponse(AIPlan saveAIPlan) {
 
         if (saveAIPlan == null) return null;
