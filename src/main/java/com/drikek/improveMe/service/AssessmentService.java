@@ -84,10 +84,10 @@ public class AssessmentService {
     }
 
     // Delete assessment
-    public void deleteAssessment(Long assessmentId){
+    public void deleteAssessment(Long assessmentId) {
 
         assessmentRepository.findById(assessmentId)
-                        .orElseThrow(() -> new AuthException("Assessment not found", 404));
+                .orElseThrow(() -> new AuthException("Assessment not found", 404));
 
         assessmentRepository.deleteById(assessmentId);
     }

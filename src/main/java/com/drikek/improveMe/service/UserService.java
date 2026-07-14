@@ -16,7 +16,9 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public void saveUser(User user) {userRepository.save(user);}
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
 
     @Override
     @NullMarked

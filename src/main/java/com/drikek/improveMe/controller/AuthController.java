@@ -20,17 +20,17 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<?> register (@RequestBody RegisteredRequest request) {
-            User user = authService.registerUser(request); // Throws AuthException if email exists
+    public ResponseEntity<?> register(@RequestBody RegisteredRequest request) {
+        User user = authService.registerUser(request); // Throws AuthException if email exists
 
-            UserResponse response = UserResponse.builder()
-                    .id(user.getId())
-                    .email(user.getEmail())
-                    .displayName(user.getDisplayName())
-                    .appUserRole(user.getAppUserRole())
-                    .build();
+        UserResponse response = UserResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .displayName(user.getDisplayName())
+                .appUserRole(user.getAppUserRole())
+                .build();
 
-            return ResponseEntity.ok(response);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/confirm")
@@ -40,9 +40,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login (@RequestBody LoginRequest request) {
-            AuthResponse tokens = authService.login(request); // Throw AuthException if credentials invalid
-            return ResponseEntity.ok(tokens);
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        AuthResponse tokens = authService.login(request); // Throw AuthException if credentials invalid
+        return ResponseEntity.ok(tokens);
     }
 
     @PostMapping("/refresh-token")
@@ -61,7 +61,6 @@ public class AuthController {
         LogoutAllResponse response = authService.logoutAllUserTokens(request.getEmail());
         return ResponseEntity.ok(response);
     }
-
 
 
 }

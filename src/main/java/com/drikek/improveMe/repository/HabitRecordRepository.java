@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 @SuppressWarnings("unused")
-public interface HabitRecordRepository  extends JpaRepository<@NonNull HabitRecord, @NonNull Long> {
+public interface HabitRecordRepository extends JpaRepository<@NonNull HabitRecord, @NonNull Long> {
 
     // Get all 7 days ordered correctly for ONE habit
     List<HabitRecord> findByHabitOrderByDayIndex(Habit habit);

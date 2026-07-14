@@ -43,6 +43,7 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(e.getStatus()).body(response);
     }
+
     // Catch all
     @ExceptionHandler(Exception.class)
     public ResponseEntity<@NonNull ErrorResponse> handleException(Exception ex, HttpServletRequest request) {

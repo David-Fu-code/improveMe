@@ -58,7 +58,7 @@ public class AuthService {
         String token = confirmationTokenService.createTokenForUser(user);
 
         String link = "http://localhost:8080/api/v1/auth/confirm?token=" + token;
-        emailSender.send(request.getEmail(),buildEmail(request.getEmail(), link) );
+        emailSender.send(request.getEmail(), buildEmail(request.getEmail(), link));
 
         return userRepository.save(user);
     }
@@ -75,7 +75,7 @@ public class AuthService {
     // LOGIN
     // always creates a new token
     @Transactional
-    public AuthResponse login(LoginRequest request){
+    public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new AuthException("user name not found with email: " + request.getEmail(), 404));
 
@@ -116,12 +116,12 @@ public class AuthService {
     public User getCurrentUser() {
         // Get authentication object from SecurityContext
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()){
+        if (authentication == null || !authentication.isAuthenticated()) {
             throw new AuthException("No authenticated user found", 404);
         }
         // Extract Jwt token from authentication
         String token = (String) authentication.getCredentials();
-        if (token == null){
+        if (token == null) {
             throw new AuthException("No jwt token found", 404);
         }
 
@@ -183,7 +183,6 @@ public class AuthService {
                 LocalDateTime.now()
         );
     }
-
 
 
 }

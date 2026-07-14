@@ -19,7 +19,7 @@ public class ConfirmationTokenService {
         confirmationTokenRepository.save(token);
     }
 
-    public Optional<ConfirmationToken> getToken (String token) {
+    public Optional<ConfirmationToken> getToken(String token) {
         return confirmationTokenRepository.findByToken(token);
     }
 
@@ -45,7 +45,7 @@ public class ConfirmationTokenService {
             throw new IllegalStateException("Email already confirmed");
         }
 
-        if (confirmationToken.getExpiredAt().isBefore(LocalDateTime.now())){
+        if (confirmationToken.getExpiredAt().isBefore(LocalDateTime.now())) {
             throw new IllegalStateException("Invalid or expired confirmation token");
         }
 
@@ -55,5 +55,6 @@ public class ConfirmationTokenService {
         return new ConfirmationResult("Email confirmed successfully", confirmationToken.getUser(), true);
     }
 
-    public record ConfirmationResult(String message, User user, boolean firstTime){}
+    public record ConfirmationResult(String message, User user, boolean firstTime) {
+    }
 }

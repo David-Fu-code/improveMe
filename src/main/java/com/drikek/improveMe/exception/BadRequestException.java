@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 @SuppressWarnings("unused")
-public class BadRequestException extends RuntimeException{
+public class BadRequestException extends RuntimeException {
 
     private final int status;
 

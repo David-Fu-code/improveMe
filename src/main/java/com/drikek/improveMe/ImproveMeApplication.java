@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling // for automatic run methods annotated with schedule
 public class ImproveMeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ImproveMeApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ImproveMeApplication.class, args);
+    }
 
 }

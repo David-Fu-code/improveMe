@@ -11,5 +11,6 @@ import java.util.List;
 public interface ImprovementSuggestionRepository extends JpaRepository<@NonNull ImprovementSuggestion, @NonNull Long> {
 
     List<ImprovementSuggestion> findByCategoryId(Long categoryId);
+
     void deleteById(Long id);
 }

@@ -47,7 +47,7 @@ public class HabitController {
 
     // GET single habit with it's 7-day-records
     @GetMapping("/{habitId}")
-    public ResponseEntity<@NonNull HabitWithRecordResponse> getHabitRecord(@PathVariable Long habitId){
+    public ResponseEntity<@NonNull HabitWithRecordResponse> getHabitRecord(@PathVariable Long habitId) {
 
         HabitWithRecordResponse response = habitService.getHabitsWithChecks(habitId);
         return ResponseEntity.ok(response);
@@ -76,7 +76,6 @@ public class HabitController {
         HabitRecordResponse response = habitService.toggleCheck(habitId, dayIndex);
         return ResponseEntity.ok(response);
     }
-
 
 
 }

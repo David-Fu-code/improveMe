@@ -32,7 +32,7 @@ public class ImprovementSuggestionService {
 
     // Create suggestion
     public ImprovementSuggestionDTO createSuggestion(Long categoryId, String title,
-                                                  String description, String difficulty, String frequency) {
+                                                     String description, String difficulty, String frequency) {
 
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new AuthException("Category not found", 404));
@@ -48,16 +48,25 @@ public class ImprovementSuggestionService {
 
         return mapToDTO(saved);
     }
+
     // Update suggestion
     public ImprovementSuggestionDTO updateSuggestion(Long suggestionId, String title, String description, String difficulty, String frequency) {
 
         ImprovementSuggestion suggestion = suggestionRepository.findById(suggestionId)
                 .orElseThrow(() -> new AuthException("Category not found", 404));
 
-        if (title != null && !title.isBlank()){suggestion.setTitle(title);}
-        if (description != null && !description.isBlank()){suggestion.setDescription(description);}
-        if (difficulty != null && !difficulty.isBlank()){suggestion.setDifficulty(difficulty);}
-        if (frequency != null && !frequency.isBlank()){suggestion.setFrequency(frequency);}
+        if (title != null && !title.isBlank()) {
+            suggestion.setTitle(title);
+        }
+        if (description != null && !description.isBlank()) {
+            suggestion.setDescription(description);
+        }
+        if (difficulty != null && !difficulty.isBlank()) {
+            suggestion.setDifficulty(difficulty);
+        }
+        if (frequency != null && !frequency.isBlank()) {
+            suggestion.setFrequency(frequency);
+        }
 
         ImprovementSuggestion saved = suggestionRepository.save(suggestion);
 

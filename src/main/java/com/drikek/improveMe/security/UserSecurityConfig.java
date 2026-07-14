@@ -39,7 +39,7 @@ public class UserSecurityConfig {
                                 "/api/v1/auth/forgot-password",
                                 "/api/v1/auth/reset-password"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.GET,"/api/categories/{id}", "/api/categories").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/categories/{id}", "/api/categories").permitAll()
                         .requestMatchers("/api/habits/**").authenticated() // protected by GDPR
                         .anyRequest().authenticated()
                 )

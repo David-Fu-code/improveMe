@@ -29,7 +29,7 @@ public class HabitRecordService {
 
         List<HabitRecord> records = new ArrayList<>();
 
-        for (int day = 0; day < 7; day++ ) {
+        for (int day = 0; day < 7; day++) {
             HabitRecord record = new HabitRecord(habit, day);
             records.add(record);
         }
@@ -42,12 +42,12 @@ public class HabitRecordService {
     }
 
     // Get one specific day
-    public Optional<HabitRecord> getRecord(Long habitId, int dayIndex){
+    public Optional<HabitRecord> getRecord(Long habitId, int dayIndex) {
         return habitRecordRepository.findByHabitIdAndDayIndex(habitId, dayIndex);
     }
 
     // Mark a day is completed
-    public HabitRecord markCompleted(Long habitId, int dayIndex){
+    public HabitRecord markCompleted(Long habitId, int dayIndex) {
 
         // Validation
         HabitRecord record = habitRecordRepository.findByHabitIdAndDayIndex(habitId, dayIndex)
@@ -60,7 +60,7 @@ public class HabitRecordService {
     }
 
     // Unmark a day
-    public HabitRecord unmarkCompleted(Long habitId, int dayIndex){
+    public HabitRecord unmarkCompleted(Long habitId, int dayIndex) {
 
         // Validation
         HabitRecord record = habitRecordRepository.findByHabitIdAndDayIndex(habitId, dayIndex)

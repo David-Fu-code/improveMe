@@ -79,7 +79,7 @@ public class CategoryService {
     public void deleteCategory(Long id, String userName) {
 
         Category category = categoryRepository.findById(id)
-                        .orElseThrow(() -> new AuthException("category ID not found", 404));
+                .orElseThrow(() -> new AuthException("category ID not found", 404));
 
         // Check if the user is the owner of the category
         if (!category.getUser().getEmail().equals(userName)) {

@@ -4,6 +4,7 @@ import com.drikek.improveMe.entity.User;
 import com.drikek.improveMe.exception.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -39,7 +40,7 @@ public class RefreshTokenService {
                 .orElseThrow(() -> new AuthException("refresh token not found", 404));
 
         if (refreshToken.isUsed()) {
-           throw new AuthException("Refresh token already used", 403);
+            throw new AuthException("Refresh token already used", 403);
 
         } else if (refreshToken.getExpiresDate().isBefore(LocalDateTime.now())) {
             throw new AuthException("refresh token is expired", 401);
@@ -58,7 +59,7 @@ public class RefreshTokenService {
     // Frontend send String token
     public void markRefreshTokenAsUsed(String token) {
         RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
-                        .orElseThrow(() -> new AuthException("Refresh token not found", 404));
+                .orElseThrow(() -> new AuthException("Refresh token not found", 404));
         refreshToken.setUsed(true);
         refreshTokenRepository.save(refreshToken);
     }

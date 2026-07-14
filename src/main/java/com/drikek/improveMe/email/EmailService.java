@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings("unused")
-public class EmailService implements EmailSender{
+public class EmailService implements EmailSender {
 
     private final JavaMailSender emailSender;
 
@@ -27,7 +27,7 @@ public class EmailService implements EmailSender{
 
             emailSender.send(mimeMessage);
 
-        }catch (MessagingException e){
+        } catch (MessagingException e) {
             throw new IllegalStateException("Failed to send email" + e);
         }
     }

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-@JsonPropertyOrder({ "id", "title", "description", "categoryId", "categoryName", "startDate", "createdAt" })
+@JsonPropertyOrder({"id", "title", "description", "categoryId", "categoryName", "startDate", "createdAt"})
 public class HabitResponse {
     private Long id;
     private String title;

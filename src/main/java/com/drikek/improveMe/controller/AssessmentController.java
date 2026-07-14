@@ -29,6 +29,7 @@ public class AssessmentController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
     @GetMapping("/user")
     public ResponseEntity<@NonNull List<AssessmentResponse>> getAssessmentForUser(@AuthenticationPrincipal UserDetails userDetails) {
 
@@ -53,6 +54,7 @@ public class AssessmentController {
 
         return ResponseEntity.ok(response);
     }
+
     @DeleteMapping("/{assessmentId}")
     public ResponseEntity<?> deleteAssessment(@PathVariable Long assessmentId) {
 
