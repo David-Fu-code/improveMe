@@ -39,7 +39,7 @@ public class AIPlan {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false,  length = 20)
+    @Column(nullable = false, length = 20)
     private String status; // "active", "completed", "paused", "cancelled"
 
     @Column(nullable = false)

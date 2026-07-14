@@ -1,5 +1,6 @@
 package com.drikek.improveMe.controller;
 
+import com.drikek.improveMe.dto.AIPlanGenerationRequest;
 import com.drikek.improveMe.dto.AIPlanRequest;
 import com.drikek.improveMe.dto.AIPlanResponse;
 import com.drikek.improveMe.service.AIPlanService;
@@ -24,7 +25,6 @@ public class AIPlanController {
     @PostMapping
     public ResponseEntity<@NonNull AIPlanResponse> createAIPlan(@AuthenticationPrincipal UserDetails userDetails,
                                                                 @RequestBody AIPlanRequest request) {
-
         AIPlanResponse response = aiPlanService.createAIPlan(userDetails.getUsername(), request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -33,15 +33,15 @@ public class AIPlanController {
 
     @GetMapping("/user")
     public ResponseEntity<@NonNull List<AIPlanResponse>> getAIPlanForUser(@AuthenticationPrincipal UserDetails userDetails) {
-
-        List<AIPlanResponse> response = aiPlanService.getAIPlansForUser(userDetails.getUsername());
+        List<AIPlanResponse> response = aiPlanService.getAIPlansForUser(
+                userDetails.getUsername()
+        );
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<@NonNull AIPlanResponse> getAIPlanById(@PathVariable Long id) {
-
         AIPlanResponse response = aiPlanService.getAIPlanById(id);
 
         return ResponseEntity.ok(response);
@@ -50,15 +50,16 @@ public class AIPlanController {
     @GetMapping("/user/latest")
     public ResponseEntity<@NonNull AIPlanResponse> getLatestAIPlan(@AuthenticationPrincipal UserDetails userDetails,
                                                                    @RequestParam Long categoryId) {
-
-        AIPlanResponse response = aiPlanService.getLatestAIPlan(userDetails.getUsername(), categoryId);
+        AIPlanResponse response = aiPlanService.getLatestAIPlan(
+                userDetails.getUsername(),
+                categoryId
+        );
 
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAIPlan(@PathVariable Long id) {
-
         aiPlanService.deleteAIPlan(id);
 
         return ResponseEntity.ok("AI Plan deleted successfully");
@@ -67,10 +68,23 @@ public class AIPlanController {
     @PutMapping("/{id}")
     public ResponseEntity<@NonNull AIPlanResponse> updateAIPlan(@PathVariable Long id,
                                                                 @RequestBody AIPlanRequest request) {
-
-        AIPlanResponse response = aiPlanService.updateAIPlan(id, request);
+        AIPlanResponse response = aiPlanService.updateAIPlan(
+                id,
+                request
+        );
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/generate")
+    public ResponseEntity<@NonNull AIPlanResponse> generateAIPlan(@AuthenticationPrincipal UserDetails userDetails,
+                                                                  @RequestBody AIPlanGenerationRequest request) {
+        AIPlanResponse response = aiPlanService.generateAIPlanWithAI(
+                userDetails.getUsername(),
+                request
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 }

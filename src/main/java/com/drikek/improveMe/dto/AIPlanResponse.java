@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @AllArgsConstructor
-@JsonPropertyOrder({ "id", "userId", "categoryId", "assessmentId", "categoryName", "title", "description", "status", "startDate", "endDate", "createdAt", "completedAt" })
+@JsonPropertyOrder({"id", "userId", "categoryId", "assessmentId", "categoryName", "title", "description", "status", "startDate", "endDate", "createdAt", "completedAt"})
 public class AIPlanResponse {
     private Long id;
     private Long userId;

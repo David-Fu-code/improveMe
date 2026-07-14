@@ -1,5 +1,6 @@
 package com.drikek.improveMe.service;
 
+import com.drikek.improveMe.dto.AIPlanGenerationRequest;
 import com.drikek.improveMe.dto.AIPlanRequest;
 import com.drikek.improveMe.dto.AIPlanResponse;
 import com.drikek.improveMe.entity.AIPlan;
@@ -29,6 +30,7 @@ public class AIPlanService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final AssessmentRepository assessmentRepository;
+    private final AIService aiService;
 
     // Create AI plan
     public AIPlanResponse createAIPlan(String userName, AIPlanRequest request) {
@@ -145,4 +147,53 @@ public class AIPlanService {
 
         );
     }
+
+    public AIPlanResponse generateAIPlanWithAI(String userName, AIPlanGenerationRequest request) {
+
+        // 1. Obtain user, assessment, category
+        User user = userRepository.findByEmail(userName)
+                .orElseThrow(() -> new AuthException("Username not found: " + userName, 404));
+
+        Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new AuthException("Category not found: " + request.getCategoryId(), 404));
+
+        Assessment assessment = assessmentRepository.findById(request.getAssessmentId())
+                .orElseThrow(() -> new AuthException("Assessment not found: " + request.getAssessmentId(), 404));
+
+        // 2. Obtain assessment data
+        String assessmentData = String.format(
+                "Nivel: %s, Puntuación: %d, Preguntas: %s, Respuestas: %s",
+                assessment.getLevel(),
+                assessment.getScore(),
+                assessment.getQuestions(),
+                assessment.getAnswers()
+        );
+
+        // 3. Call aiService.generateImprovementPlan()
+        String generateContent = aiService.generateImprovementPlan(
+                assessmentData,
+                category.getName(),
+                request.getUserGoals() != null ? request.getUserGoals() : "Mejora general"
+        );
+
+        // 4. Create AIPlan
+        AIPlan aiPlan = new AIPlan();
+        aiPlan.setUser(user);
+        aiPlan.setCategory(category);
+        aiPlan.setAssessment(assessment);
+        aiPlan.setTitle("Plan de IA - " + category.getName());
+        aiPlan.setDescription(generateContent); // AI generated content
+        aiPlan.setStatus("pending"); // Plan not started
+        aiPlan.setStartDate(LocalDateTime.now());
+        aiPlan.setEndDate(LocalDateTime.now().plusWeeks(4)); // 4 weeks default
+        aiPlan.setCreatedAt(LocalDateTime.now());
+
+        // 5. Save AIPlan
+        AIPlan saveAIPlan = aiPlanRepository.save(aiPlan);
+
+        // 6. Retornar AIPlanResponse
+        return toAIPlanResponse(saveAIPlan);
+    }
+
+
 }
